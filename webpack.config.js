@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: process.env.NODE_ENV === "development" ? "development" : "production",
-  entry: ["./src/index.js"],
+  entry: process.env.NODE_ENV === "development" ? ["./src/index.dev.js"] : ["./src/index.prod.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "build/[name].js",
