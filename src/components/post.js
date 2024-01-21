@@ -6,6 +6,7 @@ export const Post = ({ articles, fetchArticles }) => {
   useEffect(() => {
     fetchArticles();
   }, []);
+
   return (
     <>
       <h1>{articles[0]?.title}</h1>
@@ -20,6 +21,11 @@ const mapStateToProps = (state) => {
   };
 };
 
+const loadData = (store, param) => {
+  return store.dispatch(fetchArticles(param));
+};
+
 export default {
   component: connect(mapStateToProps, { fetchArticles })(Post),
+  loadData,
 };

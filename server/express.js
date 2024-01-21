@@ -1,31 +1,36 @@
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
-const React = require("react");
-const ReactDOMServer = require("react-dom/server");
-const { StaticRouter } = require("react-router-dom/server");
-
+import createStore from "../src/components/store";
+import appRoutes from "../src/components/routes";
+import renderer from "./renderer";
+import { matchRoutes } from "react-router";
 const app = express();
-const { App } = require("../src/components/app");
 
-app.get(/\.(js|css|map|ico)$/, express.static(path.resolve(__dirname, "../dist")));
-
+app.get(/\.(js|css|ico|map)$/, express.static(path.resolve(__dirname, "../dist")));
+app.use("/favicon.ico", express.static("../dist/assets/favicon.ico"));
+app.get("/favicon.ico", (req, res) => res.status(204).end());
 app.use("*", (req, res) => {
-  let indexHTML = fs.readFileSync(path.resolve(__dirname, "../dist/index.html"), {
-    encoding: "utf-8",
+  const routes = matchRoutes(appRoutes, req.originalUrl);
+
+  const store = createStore();
+
+  const promises = routes
+    ?.map(({ route }) => {
+      return route.loadData ? route.loadData(store) : null;
+    })
+    ?.map((promise) => {
+      if (promise) {
+        return new Promise((resolve, reject) => {
+          promise.then(resolve).catch(reject);
+        });
+      }
+    });
+
+  Promise.all(promises).then(() => {
+    const context = {};
+    const html = renderer(req, store, context);
+    return res.contentType("text/html").status(200).send(html);
   });
-
-  const context = {};
-
-  const appHTML = ReactDOMServer.renderToString(
-    <StaticRouter location={req.originalUrl} context={context}>
-      <App />
-    </StaticRouter>
-  );
-
-  indexHTML = indexHTML.replace('<div id="app"></div>', `<div id="app">${appHTML}</div>`);
-
-  return res.contentType("text/html").status(200).send(indexHTML);
 });
 
 app.listen("9000", () => {

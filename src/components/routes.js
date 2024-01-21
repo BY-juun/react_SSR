@@ -16,5 +16,6 @@ export default [
   {
     path: "/post",
     element: <Post.component />,
+    loadData: Post.loadData,
   },
 ];
