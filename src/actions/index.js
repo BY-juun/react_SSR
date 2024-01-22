@@ -1,9 +1,10 @@
+import { API_KEY } from "../env";
+
 const options = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzODQ0N2ZiZDJmMDAxNTZlZmViYmQxZWRiYjU3ODM1ZiIsInN1YiI6IjYyMjg4MGMxZTkyZDgzMDAxYjkxNjM5YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.pNv0fGkXzRox0IuaDFWpc9xvAnRNYsKk3zpZ3Ioyc-Y",
+    Authorization: `Bearer ${API_KEY}`,
   },
 };
 

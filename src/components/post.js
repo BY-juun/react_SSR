@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchArticles } from "../actions";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 export const Post = ({ articles, fetchArticles }) => {
   const { id } = useParams();
@@ -11,6 +12,10 @@ export const Post = ({ articles, fetchArticles }) => {
 
   return (
     <>
+      <Helmet>
+        <title>{articles?.title}</title>
+        <meta name="description" content={articles?.overview}></meta>
+      </Helmet>
       <h1>{articles.title}</h1>
       <p>{articles.overview}</p>
     </>

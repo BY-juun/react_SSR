@@ -27,11 +27,18 @@ app.use("*", (req, res) => {
         });
       }
     });
-  console.log("store.getState() : ", store.getState());
+
   Promise.all(promises).then(() => {
     const context = {};
+    res.contentType("text/html");
     const html = renderer(req, store, context);
-    return res.contentType("text/html").status(200).send(html);
+
+    if (routes[0].route?.path === "*") {
+      res.status(404);
+    } else {
+      res.status(200);
+    }
+    return res.send(html);
   });
 });
 
