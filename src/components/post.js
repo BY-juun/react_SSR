@@ -1,16 +1,18 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchArticles } from "../actions";
+import { useParams } from "react-router-dom";
 
 export const Post = ({ articles, fetchArticles }) => {
+  const { id } = useParams();
   useEffect(() => {
-    fetchArticles();
-  }, []);
+    fetchArticles(id);
+  }, [id]);
 
   return (
     <>
-      <h1>{articles[0]?.title}</h1>
-      <h2>{articles[0]?.body}</h2>
+      <h1>{articles.title}</h1>
+      <p>{articles.overview}</p>
     </>
   );
 };

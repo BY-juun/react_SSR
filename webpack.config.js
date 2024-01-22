@@ -5,10 +5,14 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: process.env.NODE_ENV === "development" ? "development" : "production",
-  entry: process.env.NODE_ENV === "development" ? ["./src/index.dev.js"] : ["./src/index.prod.js"],
+  entry:
+    process.env.NODE_ENV === "development"
+      ? ["./src/index.dev.js"]
+      : ["./src/index.prod.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "build/[name].js",
+    publicPath: "/",
   },
 
   module: {
@@ -31,7 +35,12 @@ module.exports = {
     }),
 
     new CopyWebpackPlugin({
-      patterns: [{ from: path.resolve(__dirname, "src/assets"), to: path.resolve(__dirname, "dist/assets") }],
+      patterns: [
+        {
+          from: path.resolve(__dirname, "src/assets"),
+          to: path.resolve(__dirname, "dist/assets"),
+        },
+      ],
     }),
   ],
 

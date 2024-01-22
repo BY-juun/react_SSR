@@ -6,17 +6,19 @@ import renderer from "./renderer";
 import { matchRoutes } from "react-router";
 const app = express();
 
-app.get(/\.(js|css|ico|map)$/, express.static(path.resolve(__dirname, "../dist")));
+app.get(
+  /\.(js|css|ico|map)$/,
+  express.static(path.resolve(__dirname, "../dist"))
+);
 app.use("/favicon.ico", express.static("../dist/assets/favicon.ico"));
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 app.use("*", (req, res) => {
   const routes = matchRoutes(appRoutes, req.originalUrl);
 
   const store = createStore();
-
   const promises = routes
     ?.map(({ route }) => {
-      return route.loadData ? route.loadData(store) : null;
+      return route.loadData ? route.loadData(store, req.originalUrl) : null;
     })
     ?.map((promise) => {
       if (promise) {
@@ -25,7 +27,7 @@ app.use("*", (req, res) => {
         });
       }
     });
-
+  console.log("store.getState() : ", store.getState());
   Promise.all(promises).then(() => {
     const context = {};
     const html = renderer(req, store, context);
