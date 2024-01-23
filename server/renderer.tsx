@@ -2,16 +2,16 @@ import React from "react";
 import { Provider } from "react-redux";
 import { StaticRouter } from "react-router-dom/server";
 import ReactDOMServer from "react-dom/server";
-import fs from "fs";
-import path from "path";
 import { App } from "../src/components/app";
 import serializeJavascript from "serialize-javascript";
 import { Helmet } from "react-helmet";
+import { Request } from "express";
+import { Store } from "redux";
 
-export default (req, store, context) => {
+export default function (req: Request, store: Store<any>) {
   const appHTML = ReactDOMServer.renderToString(
     <Provider store={store}>
-      <StaticRouter location={req.originalUrl} context={context}>
+      <StaticRouter location={req.originalUrl}>
         <App />
       </StaticRouter>
     </Provider>
@@ -39,4 +39,4 @@ export default (req, store, context) => {
   `;
 
   return indexHTML;
-};
+}
