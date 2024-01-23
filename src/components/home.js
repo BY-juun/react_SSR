@@ -7,7 +7,6 @@ const Home = ({ articles, fetchArticles }) => {
   useEffect(() => {
     fetchArticles();
   }, []);
-  console.log("articles : ", articles);
 
   if (!articles.results) {
     return "No Data";
@@ -34,8 +33,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const loadData = (store, param) => {
-  return store.dispatch(fetchArticles(param));
+const loadData = (store) => {
+  return store.dispatch(fetchArticles());
 };
 
 export default {
