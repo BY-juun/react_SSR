@@ -1,20 +1,20 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { fetchArticles } from "../actions";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { fetchMovieList } from "../actions";
 
-const Home = ({ articles, fetchArticles }: any) => {
+const Home = () => {
+  const [movieList, setMovieList] = useState([]);
   useEffect(() => {
-    fetchArticles();
+    fetchMovieList().then((res) => setMovieList(res.results));
   }, []);
 
-  if (!articles.results) {
-    return "No Data";
+  if (movieList.length === 0) {
+    return <div>No Data</div>;
   }
 
   return (
     <>
-      {articles.results.map((movie: any) => (
+      {movieList.map((movie: any) => (
         <div key={movie.id}>
           <Link to={`/post/${movie.id}`}>
             <h2>{movie.title}</h2>
@@ -27,17 +27,10 @@ const Home = ({ articles, fetchArticles }: any) => {
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    articles: state.articles,
-  };
-};
-
-const loadData = (store: any) => {
-  return store.dispatch(fetchArticles());
-};
+// const loadData = (store: any) => {
+//   return store.dispatch(fetchArticles());
+// };
 
 export default {
-  component: connect(mapStateToProps, { fetchArticles })(Home),
-  loadData,
+  component: Home,
 };

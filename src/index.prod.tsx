@@ -11,7 +11,7 @@ import thunk from "redux-thunk";
 const state = window.__PRELOADED_STATE__;
 
 ReactDOM.hydrate(
-  <Provider store={createStore(reducers, state, applyMiddleware(thunk))}>
+  <Provider store={createStore(reducers, state as any, applyMiddleware(thunk))}>
     <BrowserRouter>
       <App />
     </BrowserRouter>

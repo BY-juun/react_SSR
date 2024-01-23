@@ -1,38 +1,45 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchArticles } from "../actions";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { MovieType } from "../types";
+import { fetchMovieDetail } from "../actions";
 
-export const Post = ({ articles, fetchArticles }: any) => {
+interface Props {
+  movie: MovieType;
+  fetchMovieDetail: (movieId: string) => Promise<void>;
+}
+
+export const Post = ({ movie, fetchMovieDetail }: Props) => {
   const { id } = useParams();
+
   useEffect(() => {
-    fetchArticles(id);
+    fetchMovieDetail(id || "");
   }, [id]);
 
   return (
     <>
       <Helmet>
-        <title>{articles?.title}</title>
-        <meta name="description" content={articles?.overview}></meta>
+        <title>{movie?.title}</title>
+        <meta name="description" content={movie?.overview}></meta>
       </Helmet>
-      <h1>{articles.title}</h1>
-      <p>{articles.overview}</p>
+      <h1>{movie.title}</h1>
+      <p>{movie.overview}</p>
     </>
   );
 };
 
 const mapStateToProps = (state: any) => {
   return {
-    articles: state.articles,
+    movie: state.movie,
   };
 };
 
 const loadData = (store: any, param: string) => {
-  return store.dispatch(fetchArticles(param));
+  return store.dispatch(fetchMovieDetail(param));
 };
 
 export default {
-  component: connect(mapStateToProps, { fetchArticles })(Post),
+  component: connect(mapStateToProps, { fetchMovieDetail })(Post),
   loadData,
 };

@@ -7,7 +7,7 @@ export default [
     path: "/",
     exact: true,
     element: <Home.component />,
-    loadData: Home.loadData,
+    // loadData: Home.loadData,
   },
   {
     path: "/post/:id",
