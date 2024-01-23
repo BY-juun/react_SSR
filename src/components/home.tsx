@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { fetchArticles } from "../actions";
 import { Link } from "react-router-dom";
 
-const Home = ({ articles, fetchArticles }) => {
+const Home = ({ articles, fetchArticles }: any) => {
   useEffect(() => {
     fetchArticles();
   }, []);
@@ -14,7 +14,7 @@ const Home = ({ articles, fetchArticles }) => {
 
   return (
     <>
-      {articles.results.map((movie) => (
+      {articles.results.map((movie: any) => (
         <div key={movie.id}>
           <Link to={`/post/${movie.id}`}>
             <h2>{movie.title}</h2>
@@ -27,13 +27,13 @@ const Home = ({ articles, fetchArticles }) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
   return {
     articles: state.articles,
   };
 };
 
-const loadData = (store) => {
+const loadData = (store: any) => {
   return store.dispatch(fetchArticles());
 };
 

@@ -4,7 +4,7 @@ import { fetchArticles } from "../actions";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
-export const Post = ({ articles, fetchArticles }) => {
+export const Post = ({ articles, fetchArticles }: any) => {
   const { id } = useParams();
   useEffect(() => {
     fetchArticles(id);
@@ -22,13 +22,13 @@ export const Post = ({ articles, fetchArticles }) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
   return {
     articles: state.articles,
   };
 };
 
-const loadData = (store, param) => {
+const loadData = (store: any, param: string) => {
   return store.dispatch(fetchArticles(param));
 };
 

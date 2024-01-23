@@ -7,17 +7,23 @@ module.exports = {
   mode: process.env.NODE_ENV === "development" ? "development" : "production",
   entry:
     process.env.NODE_ENV === "development"
-      ? ["./src/index.dev.js"]
-      : ["./src/index.prod.js"],
+      ? ["./src/index.dev"]
+      : ["./src/index.prod"],
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "build/[name].js",
     publicPath: "/",
   },
-
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".scss"],
+  },
   module: {
     rules: [
-      { test: /\.jsx?$/, exclude: /node_modules/, use: ["babel-loader"] },
+      {
+        test: /\.(ts|jsx|tsx|js)?$/,
+        exclude: /node_modules/,
+        use: ["babel-loader"],
+      },
       {
         test: /\.scss$/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
@@ -43,10 +49,6 @@ module.exports = {
       ],
     }),
   ],
-
-  resolve: {
-    extensions: [".js", ".jsx", ".scss"],
-  },
   devServer: {
     port: 8088,
     historyApiFallback: true,
